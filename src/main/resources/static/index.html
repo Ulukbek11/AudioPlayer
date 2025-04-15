@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>MediaPlayer</h1>
+
+<form>
+    <input type="file" webkitdirectory id="file">
+</form>
+
+<select id="playlist">
+</select>
+<button type="submit" onclick="setSong()">Submit</button>
+
+<audio id="player" controls>
+    <source src="" id="source">
+</audio>
+
+<form>
+    <button onclick="next()">Next song</button>
+    <button onclick="previous()">Previous song</button>
+</form>
+
+<script>
+    const file = document.getElementById("file");
+    const list = document.getElementById("playlist");
+    const player = document.getElementById("player");
+    const source = document.getElementById("source");
+
+    let playlist = [];
+
+    file.addEventListener("change", () =>{
+        playlist = Array.from(file.files).filter(file => file.type.startsWith("audio/"));
+
+
+        for(let i in playlist){
+            const option = document.createElement("option");
+            option.textContent = playlist[i].name;
+            option.value = playlist[i].value;
+            list.appendChild(option);
+        };
+    })
+
+
+    function setSong() {
+        const selectedIndex = list.selectedIndex;
+            const file = playlist[selectedIndex];
+            const objectUrl = URL.createObjectURL(file);
+            source.src = objectUrl;
+            player.load();
+    }
+
+    function next(){
+        list.selectedIndex++;
+    }
+
+
+
+</script>
+</body>
+</html>
